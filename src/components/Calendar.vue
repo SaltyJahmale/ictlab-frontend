@@ -1,44 +1,23 @@
 <template>
     <div>
+        <app-header></app-header>
+        <app-calendar></app-calendar>
     </div>
 </template>
 
 <script>
-import $ from 'jquery';
-import 'fullcalendar';
+import $ from "jquery";
+import Calendar from "./CalendarPage.vue";
+import Header from "./Header.vue";
 
 export default {
-    data() {
-        return {
-            cal: null
-        }
-    },
-    mounted () {
-        var self = this
-        this.cal = $(self.$el)
-        
-        var args = {
-        header: {
-            left:   'prev,next today',
-            center: 'title',
-            right:  'month,agendaWeek,agendaDay'
-        },
-        height: "auto",
-        allDaySlot: false,
-        slotEventOverlap: false,
-        locale: 'nl-be',
-        timeFormat: 'HH:mm',
-        dayClick (date, event, view) {
-            console.log(date, event, view)
-            console.log(date.format())
-        }
-    }  
-    this.cal.fullCalendar(args)
+  components: {
+    appHeader: Header,
+    appCalendar: Calendar
   }
-}
+};
 </script>
-
+    
 <style>
-@import '../assets/css/fullcalendar.min.css';
-
 </style>
+
