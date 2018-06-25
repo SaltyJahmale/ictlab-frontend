@@ -4,12 +4,18 @@ import SignIn from './components/auth/Signin.vue'
 import SignUp from './components/auth/Signup.vue'
 import Sensor from './components/sensor/Sensor.vue'
 import User from './components/crud/User.vue'
+import EditUser from './components/crud/EditUser'
+import Test from './components/calendar/Test.vue'
+import Message from './components/inbox/Message.vue'
+import Notification from './components/inbox/Notification.vue'
+import Reservation from './components/reservation/Reservation.vue'
+import SchoolSchedule from './components/reservation/SchoolSchedule.vue'
 
 import Vue from 'vue'
 import {store} from './store'
 import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [{
   path: '/',
@@ -48,6 +54,31 @@ const routes = [{
 {
   path: '/user',
   component: User
+},
+{
+  path: '/user/edit',
+  name: 'EditUser',
+  component: EditUser
+},
+{
+  path: '/test',
+  component: Test
+},
+{
+  path: '/notification',
+  component: Notification
+},
+{
+  path: '/reservation',
+  component: Reservation
+},
+{
+  path: '/message',
+  component: Message
+},
+{
+  path: '/schedule',
+  component: SchoolSchedule
 }
 ]
 

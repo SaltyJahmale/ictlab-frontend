@@ -71,7 +71,7 @@ export default {
       confirmPassword: "",
       enabled: true,
       lastPasswordResetDate: Date.now(),
-      authorities: ""
+      authorities: [{"id": 1, "name": "ROLE_USER"}]
     };
   },
   methods: {
@@ -83,7 +83,8 @@ export default {
         email: this.email,
         password: this.password,
         enabled: this.enabled,
-        lastPasswordResetDate: this.lastPasswordResetDate
+        lastPasswordResetDate: this.lastPasswordResetDate,
+        authorities: this.authorities
       };
       console.log(formData);
       this.$store.dispatch("signup", formData);

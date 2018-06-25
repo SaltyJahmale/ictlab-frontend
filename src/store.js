@@ -104,9 +104,10 @@ export const store = new Vuex.Store({
       return state.token !== null
     },
     userRole (state) {
-      if (state.userProps.userProps.authorities.some(role => role.authority === 'ROLE_ADMIN')) {
-        return true
-      }
+      return state.userProps.userProps.authorities.some(role => role.authority === 'ROLE_ADMIN');
+    },
+    userReceptionist (state) {
+      return state.userProps.userProps.authorities.some(role => role.authority === 'ROLE_RECEPTIONIST');
     }
   }
 })

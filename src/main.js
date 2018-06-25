@@ -6,10 +6,12 @@ import axios from 'axios'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm'
 import router from './router'
 import {store} from './store'
+import FullCalendar from "vue-full-calendar"
 
 Vue.config.productionTip = false
 axios.defaults.baseURL = 'http://localhost:8000'
 Vue.use(BootstrapVue)
+Vue.use(FullCalendar)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

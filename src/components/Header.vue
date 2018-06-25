@@ -12,17 +12,29 @@
           <router-link to="/signin">Sign In</router-link>
         </li>
         <li v-if="auth">
-          <router-link to="/calendar">Calender</router-link>
+          <router-link to="/test">Calender</router-link>
+        </li>
+        <li v-if="auth">
+          <button @click="messageDropdown" class="dropbtn">Inbox</button>
+          <div id="messasgeDropdown" class="dropdown-content">
+            <router-link to="/notification">Notifications</router-link>
+            <router-link v-if="isAdmin || isReceptionist" to="/message">Message</router-link>
+          </div>
+        </li>
+        <li v-if="auth">
+          <button @click="reservationDropdown" class="dropbtn">Reservation</button>
+          <div id="reservationDropdown" class="dropdown-content">
+            <router-link to="/reservation">Reservation</router-link>
+            <router-link v-if="isAdmin || isReceptionist" to="/schedule">Schedule</router-link>
+          </div>
         </li>
         <li v-if="auth && isAdmin">
-          <!-- <div class="dropdown"> -->
-            <button @click="dropdown" class="dropbtn">Admin</button>
+            <button @click="adminDropdown" class="dropbtn">Admin</button>
             <div id="myDropdown" class="dropdown-content">
               <router-link to="/user">User</router-link>
               <router-link to="/sensor">Sensor</router-link>
             </div>
-          <!-- </div> -->
-        </li> 
+        </li>
         <li v-if="auth">
           <button @click="onLogout" class="logout">Logout</button>
         </li>
@@ -35,10 +47,13 @@
 export default {
   computed: {
     auth () {
-      return this.$store.getters.isAuthenticated  
+      return this.$store.getters.isAuthenticated
     },
     isAdmin () {
       return !this.$store.getters.user ? false : this.$store.getters.userRole
+    },
+    isReceptionist() {
+      return !this.$store.getters.user ? false : this.$store.getters.userReceptionist
     }
   },
   created () {
@@ -48,8 +63,14 @@ export default {
     onLogout () {
       this.$store.dispatch('logout')
     },
-    dropdown () {
+    adminDropdown () {
       document.getElementById("myDropdown").classList.toggle("show");
+    },
+    reservationDropdown() {
+      document.getElementById("reservationDropdown").classList.toggle("show");
+    },
+    messageDropdown() {
+      document.getElementById("messasgeDropdown").classList.toggle("show");
     }
   }
 }
@@ -64,6 +85,8 @@ export default {
     align-items: center;
     background-color: #521751;
     padding: 0 20px;
+    position: relative;
+    z-index: 10000;
   }
 
   .logo {
@@ -128,7 +151,7 @@ export default {
     cursor: pointer;
 }
 
-/* The container <div> - needed to position the dropdown content */
+/* The container <div> - needed to position the adminDropdown content */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -144,7 +167,7 @@ export default {
     z-index: 1;
 }
 
-/* Links inside the dropdown */
+/* Links inside the adminDropdown */
 .dropdown-content a {
     color: white;
     background-color: #521751;
@@ -153,11 +176,11 @@ export default {
     display: block;
 }
 
-/* Change color of dropdown links on hover */
+/* Change color of adminDropdown links on hover */
 .dropdown-content a:hover {
   background-color: #521751
   }
 
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+/* Show the adminDropdown menu (use JS to add this class to the .adminDropdown-content container when the user clicks on the adminDropdown button) */
 .show {display:block;}
 </style>
