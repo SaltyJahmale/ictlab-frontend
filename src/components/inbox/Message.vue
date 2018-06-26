@@ -75,10 +75,22 @@
           },
           { headers: { Authorization: `Bearer ${token}` } })
           .then(res => {
+            alert("Message got send to user "+this.username);
             console.log(res)
           })
-          .catch(e => {
-            console.log(e)
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              // console.log(error.response.data);
+              if(error.response.status === 404) {
+                alert("The message could not be send to user with the username: "+this.username)
+              }
+              // console.log(error.response.headers);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
           })
       }
     }

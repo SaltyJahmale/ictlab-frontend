@@ -68,9 +68,8 @@
     },
     methods: {
       onSubmit() {
-
         const token = localStorage.getItem("TOKEN_KEY");
-        axios.post('/reservation/simple',
+        axios.post('/reservation/simple/'+this.username,
           {
             "title": this.username+' '+this.roomsInDb[0].floorNumber+this.roomsInDb[0].roomNumber,
             "start": this.replaceSpace(this.start),
@@ -79,10 +78,36 @@
           },
           { headers: { Authorization: `Bearer ${token}` } })
           .then(res => {
+            if(moment(this.end).isBefore(this.start)) {
+              alert("Start Datetime cannot be bigger than End Datetime");
+              return
+            }
+            let startdate = moment(this.start);
+            let enddate = moment(this.end);
+
+            if(!startdate.isValid() && !enddate.isValid()) {
+              alert("Use the placeholder format for dates");
+              return
+            }
+            routes.push('/test');
             console.log(res)
           })
-          .catch(e => {
-            console.log(e)
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              // console.log(error.response.data);
+              if(error.response.status === 409) {
+                alert("Date is already taken!")
+              }
+              if(error.response.status === 400) {
+                alert("Bad date format")
+              }
+              // console.log(error.response.headers);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
           })
       },
       replaceSpace(date) {

@@ -17,4 +17,4 @@ COPY . /usr/src/app
 EXPOSE 8080
 
 # run command
-CMD ["npm run dev"] 
+CMD npm run dev 

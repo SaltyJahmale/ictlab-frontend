@@ -34,12 +34,27 @@ export const store = new Vuex.Store({
         email: authData.email,
         password: authData.password,
         enabled: authData.enabled,
-        lastPasswordResetDate: authData.lastPasswordResetDate
+        lastPasswordResetDate: authData.lastPasswordResetDate,
+        authorities: authData.authorities
       })
         .then((res) => {
+          routes.push('/signin');
           console.log(res)
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            // console.log(error.response.data);
+            if(error.response.status === 409) {
+              alert("Username is already taken!")
+            }
+            // console.log(error.response.headers);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+        })
     },
     login ({
       commit
@@ -56,7 +71,21 @@ export const store = new Vuex.Store({
           })
           routes.replace('/')
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          // Error
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            // console.log(error.response.data);
+              if(error.response.status === 401) {
+                alert("Oops credentials didn't match!")
+              }
+            // console.log(error.response.headers);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+        })
     },
     tryAutoLogin ({commit}) {
       const token = localStorage.getItem('TOKEN_KEY')

@@ -51,9 +51,9 @@
           editable: false,
           height: "auto",
           minTime: "08:30",
-          maxTime: "18:30",
-          timeFormat: "H(:mm)",
-          // axisFormat: "HH:mm",
+          maxTime: "21:00",
+          timeFormat: "HH:mm",
+          slotLabelFormat: "H:mm",
           allDaySlot: false,
           locale: "nl",
           header: {

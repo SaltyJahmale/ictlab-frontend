@@ -4,7 +4,7 @@
     <p></p>
     <ul class="list-group">
       <li class="list-group-item text-muted">Inbox</li>
-      <li v-for="message in myMessages" class="list-group-item text-right">
+      <li v-if="myMessages.length > 0"  v-for="message in myMessages" class="list-group-item text-right">
         <p  class="fa-pull-leftl-left">
           {{message.state}}
         </p>

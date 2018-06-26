@@ -45,7 +45,10 @@ export default {
         password: this.password
       }
       console.log(formData);
-      this.$store.dispatch("login", formData)
+      this.$store.dispatch("login", formData).catch(e => {
+        console.log(e);
+        alert("Oops credentials didn't match");
+      })
     }
   }
 }
