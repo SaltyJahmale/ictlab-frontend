@@ -2,14 +2,14 @@
   <div id="signup">
     <app-header></app-header>
     <div class="signup-form">
-      <form @submit.prevent="onSubmit">
+      <form @submit.prevent="updateSchoolSchedule">
 
         <div class="input">
-          <label for="username">Username</label>
+          <label for="title">Course</label>
           <input
             type="text"
-            id="username"
-            v-model="username" disabled>
+            id="title"
+            v-model="schoolschedule.title" disabled>
         </div>
 
         <div class="input">
@@ -18,7 +18,7 @@
             type="datetime-local"
             placeholder="YYYY-MM-DD HH:mm"
             id="startDate"
-            v-model="start">
+            v-model="schoolschedule.start">
         </div>
 
         <div class="input">
@@ -27,18 +27,20 @@
             type="datetime-local"
             placeholder="YYYY-MM-DD HH:mm"
             id="endDate"
-            v-model="end">
+            v-model="schoolschedule.end">
         </div>
 
         <div class="input">
           <label for="room">Room</label>
-          <select  id="room" v-model="rooms" >
+          <select  id="room" v-model="pickedRoom" >
             <option  disabled value=''>Please select one</option>
             <option v-for="(room, index) in roomsInDb" v-bind:value="room">{{room.floorNumber }} {{room.roomNumber}}</option>
           </select>
         </div>
+
         <div class="submit">
-          <button type="submit">Submit</button>
+          <button type="submit" @click="updateSchoolSchedule" class="btn btn-primary">Submit</button>
+          <router-link class="btn btn-default" :to="'/schedules'">Cancel</router-link>
         </div>
       </form>
     </div>
@@ -49,64 +51,50 @@
   import Header from '../Header.vue'
   import axios from 'axios'
   import moment from 'moment'
-  import routes from '../../router'
 
   export default {
-    name: "reservation",
-    data () {
+    name: "EditSchoolSchedule",
+    data() {
       return {
-        username: "",
-        start: moment().format("YYYY-MM-DD HH:mm"),
-        end: moment().format("YYYY-MM-DD HH:mm"),
-        room: "",
-        rooms: [],
-        schoolSchedules: [],
+        schoolschedule: {
+          id: '',
+          title: '',
+          start: moment().format("YYYY-MM-DD HH:mm"),
+          end: moment().format("YYYY-MM-DD HH:mm"),
+          rooms:[],
+          users: [],
+          teachers: []
+        },
+        pickedRoom: [],
         roomsInDb: []
+      }
+    },
+    filters: {
+      changeDateFormat(date) {
+        return moment(date).format("YYYY-MM-DD HH:mm")
       }
     },
     components: {
       appHeader: Header
     },
     methods: {
-      onSubmit() {
-        let startdate = moment(this.start);
-        let enddate = moment(this.end);
-        let now = moment();
-
-        if(!startdate.isValid()) {
-          alert("Use the placeholder for start date  format for dates");
-          return ''
-        }
-
-        if(!enddate.isValid()) {
-          alert("Use the placeholder for end date format for dates");
-          return ''
-        }
-
-
-
-        if(moment(this.end).isBefore(this.start)) {
-          alert("Start Datetime cannot be bigger than End Datetime");
-          return ''
-        }
-
-        if(!startdate.isSameOrAfter(now)) {
-          alert("Date should not be in the past");
-          return ''
-        }
-
+      updateSchoolSchedule() {
         const token = localStorage.getItem("TOKEN_KEY");
-        axios.post('/reservation/simple/'+this.username,
+
+        axios.put('/schoolschedule/edit',
           {
-            "title": this.username+' '+this.roomsInDb[0].floorNumber+this.roomsInDb[0].roomNumber,
-            "start": this.replaceSpace(this.start),
-            "end": this.replaceSpace(this.end),
-            "rooms": this.roomsInDb,
+            id: this.schoolschedule.id,
+            title: this.schoolschedule.title,
+            start: this.schoolschedule.start,
+            end: this.schoolschedule.end,
+            rooms:[this.pickedRoom],
+            users: this.schoolschedule.users,
+            teachers: this.schoolschedule.teachers
           },
-          { headers: { Authorization: `Bearer ${token}` } })
+          {headers: {Authorization: `Bearer ${token}`}})
           .then(res => {
-            routes.push('/test');
-            console.log(res)
+            console.log(res);
+            alert("Successfully edited schedule!\nUsers are notified")
           })
           .catch(error => {
             if (error.response) {
@@ -116,29 +104,39 @@
               if(error.response.status === 409) {
                 alert("Date is already taken!")
               }
-              if(error.response.status === 400) {
-                alert("Bad date format")
-              }
+              // if(error.response.status === 400) {
+                // alert("Bad date format")
+              // }
               // console.log(error.response.headers);
             } else {
               // Something happened in setting up the request that triggered an Error
               console.log('Error', error.message);
             }
           })
-      },
-      replaceSpace(date) {
-        return date.replace(' ', 'T')
       }
     },
     created() {
-      this.username = this.$store.getters.user.username;
+      this.id = this.$route.params.id;
       const token = localStorage.getItem("TOKEN_KEY");
-      axios.get('/rooms', { headers: { Authorization: `Bearer ${token}` } })
+
+      axios.get('/schoolschedule/'+this.id,
+        {headers: {Authorization: `Bearer ${token}`}})
         .then(res => {
-        this.roomsInDb = res.data
-      }).catch(e => {
+          this.schoolschedule = res.data;
+
+          console.log(res.data);
+        })
+        .catch(e => {
+          console.log(e.data);
+        });
+
+      axios.get('/rooms',
+        { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+          this.roomsInDb = res.data
+        }).catch(e => {
         console.log(e)
-      })
+      });
     }
   }
 </script>

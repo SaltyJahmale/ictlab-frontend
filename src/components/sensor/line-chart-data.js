@@ -1,11 +1,11 @@
 export const planetChartData = {
   type: 'line',
   data: {
-    labels: ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'],
+    labels: ['2018-06-28 10:00:00.00', '2018-06-28 10:30:00.00', '2018-06-28 11:00:00.00', '2018-06-28 11:30:00.00', '2018-06-28 12:00:00.00', '2018-06-28 12:30:00.00', '2018-06-28 13:00:00.00', '2018-06-28 13:30:00.00'],
     datasets: [
       { // one line graph
-        label: 'Number of Moons',
-        data: [0, 0, 1, 2, 67, 62, 27, 14],
+        label: 'TEMP Sensor room 4312',
+        data: [0, 0, 18, 20, 20, 21, 21, 17],
         backgroundColor: [
           'rgba(54,73,93,.5)', // Blue
           'rgba(54,73,93,.5)',
@@ -29,8 +29,8 @@ export const planetChartData = {
         borderWidth: 3
       },
       { // another line graph
-        label: 'Planet Mass (x1,000 km)',
-        data: [4.8, 12.1, 12.7, 6.7, 139.8, 116.4, 50.7, 49.2],
+        label: 'TEMP Sensor room 1234',
+        data: [17, 17, 16, 16, 18, 18, 17, 17],
         backgroundColor: [
           'rgba(71, 183,132,.5)' // Green
         ],

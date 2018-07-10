@@ -55,7 +55,7 @@
         username: "",
         msg: "",
         localDateTime: moment(),
-        users: [],
+        schoolSchedules: [],
         dropdownNews: "NEWS",
         dropdownCancel: "CANCELLED",
         dropdownRemoved: "REMOVED",
@@ -71,7 +71,7 @@
             "state": this.state,
             "msg": this.msg,
             "localDateTime": this.localDateTime,
-            "users": this.users
+            "schoolSchedules": this.schoolSchedules
           },
           { headers: { Authorization: `Bearer ${token}` } })
           .then(res => {

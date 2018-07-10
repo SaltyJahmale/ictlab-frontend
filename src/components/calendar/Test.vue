@@ -2,7 +2,7 @@
   <div>
     <app-header></app-header>
     <p></p>
-    <full-calendar :config="config" :event-render="events" :events="events" :eventSources="eventSources"></full-calendar>
+    <full-calendar :config="config" :event-render="eventSources" :eventSources="eventSources"></full-calendar>
     <p></p>
   </div>
 </template>
@@ -24,9 +24,9 @@
           {
             events(start, end, timezone, callback) {
               const token = localStorage.getItem("TOKEN_KEY");
-              axios.get(`/reservations/?start=${start}&end=${end}`, { headers: { Authorization: `Bearer ${token}` } })
+              axios.get(`/reservation/reservations/?start=${start}&end=${end}`, { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => {
-                  callback(res.data._embedded.reservations)
+                  callback(res.data)
               }).catch(e => {
                 console.log(e)
               });
@@ -65,6 +65,9 @@
       }
     },
     methods: {
+      eventRender(event, element) {
+        element.attr("random", event.rooms.roomNumber)
+      },
       refreshEvents() {
         this.$refs.calendar.$emit('refetch-events')
       }

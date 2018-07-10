@@ -10,6 +10,9 @@ import Message from './components/inbox/Message.vue'
 import Notification from './components/inbox/Notification.vue'
 import Reservation from './components/reservation/Reservation.vue'
 import SchoolSchedule from './components/reservation/SchoolSchedule.vue'
+import MyReservation from './components/reservation/MyReservations'
+import SchoolSchedules from './components/reservation/MySchoolSchedule.vue'
+import EditSchoolSchedule from './components/reservation/EditSchoolSchedule.vue'
 
 import Vue from 'vue'
 import {store} from './store'
@@ -79,6 +82,19 @@ const routes = [{
 {
   path: '/schedule',
   component: SchoolSchedule
+},
+{
+  path: '/myreservation',
+  component: MyReservation
+},
+{
+  path: '/schedules',
+  component: SchoolSchedules
+},
+{
+  path: '/edit',
+  name: 'EditSchoolSchedule',
+  component: EditSchoolSchedule
 }
 ]
 

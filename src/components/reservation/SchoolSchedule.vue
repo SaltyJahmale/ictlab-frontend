@@ -45,12 +45,13 @@
             <option v-for="(group, index) in groupsInDb" v-bind:value="group">{{group.groupName}}</option>
           </select>
         </div>
+
         <div class="input">
           <label for="teacher">Teachers</label>
-          <input
-            type="text"
-            id="teacher"
-            v-model="teacher">
+          <select id="teacher" v-model="teachers">
+            <option disabled value="">Please select one</option>
+            <option v-for="(teacher, index) in teachersInDb" v-bind:value="teacher">{{teacher.name}}</option>
+          </select>
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -72,29 +73,27 @@
     data () {
       return {
         title: "",
-        teacher: [],
+        teachersInDb: [],
+        teachers: [],
         start: moment().format("YYYY-MM-DD HH:mm"),
         end: moment().format("YYYY-MM-DD HH:mm"),
-        room: "",
         rooms: [],
         roomsInDb: [],
-        group: "",
-        groups: [{"id": "1", "groupName": "INF1A"}],
-        groupa: [{"id": "1", "groupName": "INF1A"}],
+        groups: [],
         groupsInDb: []
       }
     },
     methods: {
       onSubmit() {
         const token = localStorage.getItem("TOKEN_KEY");
-        axios.post('/schoolschedule',
+        axios.post('/schoolschedule/'+this.groups.groupName,
           {
-            "title": this.title+' '+this.groups.groupName+' '+this.rooms.floorNumber+this.rooms.roomNumber+' '+this.teacher,
+            "title": this.title+' '+this.groups.groupName+' '+this.rooms.floorNumber+this.rooms.roomNumber+' '+this.teachers.name,
             "start": this.replaceSpace(this.start),
             "end": this.replaceSpace(this.end),
             "rooms": [this.rooms],
-            "groups": this.groupa,
-            "teacher":  [this.teacher],
+            "groups": [this.groups],
+            "teachers":  [this.teachers],
           },
           { headers: { Authorization: `Bearer ${token}` } })
           .then(res =>{
@@ -109,6 +108,8 @@
               alert("Use the placeholder format for dates");
               return
             }
+
+            alert("Succesfully created a schedule");
             console.log(res)
           })
           .catch(error => {
@@ -143,11 +144,19 @@
         console.log(e)
       });
 
-      axios.get('/groups',
+      axios.get('/classes',
         { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
-          console.log(res.data)
-          this.groupsInDb = res.data._embedded.groups
+          this.groupsInDb = res.data
+        })
+        .catch(e => {
+          console.log(e)
+        });
+
+      axios.get('/teachers',
+        { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+          this.teachersInDb = res.data
         })
         .catch(e => {
           console.log(e)

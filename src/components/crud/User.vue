@@ -68,7 +68,7 @@ export default {
   data() {
     return {
         search: '',
-        users: [],
+        schoolSchedules: [],
         errors: [],
         username: this.username,
         firstname: this.firstname,
@@ -109,7 +109,7 @@ export default {
   computed: {
     filterUser() {
       let self=this;
-      return this.users.filter(function (user) {
+      return this.schoolSchedules.filter(function (user) {
         return user.username.toLowerCase().indexOf(self.search.toLowerCase())>=0})
     },
   },

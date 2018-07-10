@@ -18,14 +18,16 @@
           <button @click="messageDropdown" class="dropbtn">Inbox</button>
           <div id="messasgeDropdown" class="dropdown-content">
             <router-link to="/notification">Notifications</router-link>
-            <router-link v-if="isAdmin || isReceptionist" to="/message">Message</router-link>
+            <router-link to="/message">Message</router-link>
           </div>
         </li>
         <li v-if="auth">
           <button @click="reservationDropdown" class="dropbtn">Reservation</button>
           <div id="reservationDropdown" class="dropdown-content">
             <router-link to="/reservation">Reservation</router-link>
+            <router-link to="/myreservation">My Reservation</router-link>
             <router-link v-if="isAdmin || isReceptionist" to="/schedule">Schedule</router-link>
+            <router-link to="/schedules">Schedules</router-link>
           </div>
         </li>
         <li v-if="auth && isAdmin">
